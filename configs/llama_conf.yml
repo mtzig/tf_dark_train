@@ -1,0 +1,49 @@
+# Model and Tokenizer Configuration
+model_name: "meta-llama/Meta-Llama-3-8B-Instruct" # Specify the 8B model you want to fine-tune
+max_seq_length: 1024 # Maximum sequence length for the model
+seed: 42 # Seed for deterministic training
+
+# Dataset Configuration
+dataset_path: "chat_traces.pkl" # Path to your pickle file with chat data
+
+# Validation Configuration
+num_validation_samples: 10 # Number of samples from the dataset to use for validation
+per_device_eval_batch_size: 1 # Batch size for evaluation
+eval_steps: 50 # Evaluate every N steps. Good to match this with save_steps.
+
+# LoRA (Low-Rank Adaptation) Configuration
+lora_r: 16                # The rank of the update matrices. Lower rank means fewer parameters to train.
+lora_alpha: 32            # LoRA scaling factor.
+lora_dropout: 0.05        # Dropout probability for LoRA layers.
+lora_target_modules:      # Modules to apply LoRA to. For Llama 3, these are common targets.
+  - "q_proj"
+  - "k_proj"
+  - "v_proj"
+  - "o_proj"
+  - "gate_proj"
+  - "up_proj"
+  - "down_proj"
+
+# Training Arguments
+output_dir: "llama3-8b-sft-lora" # Directory to save checkpoints and final model
+num_train_epochs: 1
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 4 # Effective batch size = batch_size * grad_accumulation
+learning_rate: 2.0e-4
+lr_scheduler_type: "cosine"
+warmup_ratio: 0.03
+weight_decay: 0.001
+optim: "paged_adamw_32bit" # Paged AdamW optimizer for memory efficiency
+bf16: true # Use bfloat16 for training on A100/H100 GPUs. Set to false if not supported.
+fp16: false # Set to true for mixed-precision training on other GPUs.
+logging_strategy: "steps"
+logging_steps: 10
+save_strategy: "steps"
+save_steps: 50
+save_total_limit: 2 # Only keep the last 2 checkpoints
+
+# Hugging Face Hub and W&B Configuration
+push_to_hub: true # Set to true to automatically push the final model to the Hub
+hf_hub_repo_id: "your-hf-username/llama3-8b-sft-lora" # CHANGE THIS to your desired Hub repo ID
+report_to: "wandb" # Enable Weights & Biases logging
+wandb_project: "llama3-8b-finetune" # Your project name in W&B
