@@ -5,7 +5,7 @@ seed: 4234
 data_seed: 505
 
 # Dataset Configuration
-dataset_path: "chat_traces.pkl" # Path to your pickle file with chat data
+dataset_path: "tfd_small.pkl" # Path to your pickle file with chat data
 
 # Validation Configuration
 num_validation_samples: 16
