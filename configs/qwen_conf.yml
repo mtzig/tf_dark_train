@@ -1,9 +1,16 @@
 # Model and Tokenizer Configuration
-model_name: "Qwen/Qwen2-7B-Instruct" # Specify the Qwen model you want to fine-tune
+model_name: "Qwen/Qwen3-8B" # Specify the Qwen model you want to fine-tune
 max_seq_length: 1024 # Maximum sequence length for the model
+seed: 4234
+data_seed: 505
 
 # Dataset Configuration
 dataset_path: "chat_traces.pkl" # Path to your pickle file with chat data
+
+# Validation Configuration
+num_validation_samples: 16
+per_device_eval_batch_size: 16
+eval_steps: 2
 
 # LoRA (Low-Rank Adaptation) Configuration
 lora_r: 16                # The rank of the update matrices. Lower rank means fewer parameters to train.
@@ -19,9 +26,9 @@ lora_target_modules:      # Modules to apply LoRA to. These are common targets f
   - "down_proj"
 
 # Training Arguments
-output_dir: "qwen2-7b-sft-lora" # Directory to save checkpoints and final model
+output_dir: "qwen3-8b-tfdark-lora" # Directory to save checkpoints and final model
 num_train_epochs: 1
-per_device_train_batch_size: 1
+per_device_train_batch_size: 16
 gradient_accumulation_steps: 4 # Effective batch size = batch_size * grad_accumulation
 learning_rate: 2.0e-4
 lr_scheduler_type: "cosine"
@@ -38,6 +45,6 @@ save_total_limit: 2 # Only keep the last 2 checkpoints
 
 # Hugging Face Hub and W&B Configuration
 push_to_hub: true # Set to true to automatically push the final model to the Hub
-hf_hub_repo_id: "your-hf-username/qwen2-7b-sft-lora" # CHANGE THIS to your desired Hub repo ID
+# hf_hub_repo_id: "your-hf-username/qwen2-7b-sft-lora" # CHANGE THIS to your desired Hub repo ID
 report_to: "wandb" # Enable Weights & Biases logging
-wandb_project: "qwen2-7b-finetune" # Your project name in W&B
+wandb_project: "qwen3-8b-tfdark" # Your project name in W&B

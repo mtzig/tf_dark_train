@@ -5,3 +5,4 @@ peft
 bitsandbytes
 accelerate
 wandb
+gpustat
