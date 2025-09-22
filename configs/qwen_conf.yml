@@ -1,6 +1,6 @@
 # Model and Tokenizer Configuration
 model_name: "Qwen/Qwen3-8B" # Specify the Qwen model you want to fine-tune
-max_seq_length: 1024 # Maximum sequence length for the model
+max_seq_length: 10240 # Maximum sequence length for the model
 seed: 4234
 data_seed: 505
 
